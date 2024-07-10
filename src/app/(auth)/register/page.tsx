@@ -1,7 +1,7 @@
 import Link from "next/link";
-import LoginForm from "@/components/LoginForm";
+import RegisterForm from "@/components/RegisterForm";
 
-export default function Home() {
+export default function Register() {
   return (
     <div className="bg-gradient-to-r from-purple-800 to-pink-400 min-h-screen">
       <div className="container mx-auto flex flex-col space-y-4 py-10 md:flex-row md:space-y-0">
@@ -16,15 +16,15 @@ export default function Home() {
           <p className="mb-6 text-lg leading-relaxed text-white md:text-xl">
             Keep everything in the same place—even if your team isn&apos;t.
           </p>
-          <Link href="/register">
+          <Link href="/">
             <button className="rounded-md bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition duration-300 hover:bg-blue-700">
-              Register Now
+              Login Now
             </button>
           </Link>
         </div>
 
         <div className="flex flex-1 items-center justify-center">
-          <LoginForm />
+          <RegisterForm />
         </div>
       </div>
     </div>
