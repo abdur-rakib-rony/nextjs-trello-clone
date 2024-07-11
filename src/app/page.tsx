@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LoginForm from "@/components/LoginForm";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -17,9 +18,9 @@ export default function Home() {
             Keep everything in the same place—even if your team isn&apos;t.
           </p>
           <Link href="/register">
-            <button className="rounded-md bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition duration-300 hover:bg-blue-700">
+            <Button>
               Register Now
-            </button>
+            </Button>
           </Link>
         </div>
 

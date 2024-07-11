@@ -11,6 +11,7 @@ export interface ITask extends Document {
   labels?: string[];
   priority?: "Low" | "Medium" | "High" | "Urgent";
   teamName?: string;
+  status?: "pending" | "progress" | "completed";
   activities?: {
     action: string;
     timestamp: Date;
@@ -51,7 +52,11 @@ const TaskSchema: Schema = new Schema({
       timestamp: { type: Date, default: Date.now },
     },
   ],
+  status: { 
+    type: String, 
+    enum: ["pending", "progress", "completed"], 
+    default: "pending" 
+  },
 });
 
-export default mongoose.models.TrennyTask ||
-  mongoose.model<ITask>("TrennyTask", TaskSchema);
+export default mongoose.models.TrennyTask || mongoose.model<ITask>("TrennyTask", TaskSchema);

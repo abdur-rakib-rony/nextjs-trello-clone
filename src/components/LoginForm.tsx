@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -40,7 +43,7 @@ export default function LoginForm() {
       if (result?.error) {
         setError(result.error);
       } else {
-        router.push("/dashboard");
+        router.push("/create-project");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -55,13 +58,13 @@ export default function LoginForm() {
       <h2 className="mb-6 text-2xl font-semibold">Login to your Account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label
+          <Label
             htmlFor="email"
             className="block text-sm font-medium text-gray-700"
           >
             Email Address
-          </label>
-          <input
+          </Label>
+          <Input
             id="email"
             {...register("email")}
             type="email"
@@ -74,13 +77,13 @@ export default function LoginForm() {
         </div>
 
         <div>
-          <label
+          <Label
             htmlFor="password"
             className="block text-sm font-medium text-gray-700"
           >
             Password
-          </label>
-          <input
+          </Label>
+          <Input
             id="password"
             {...register("password")}
             type="password"
@@ -94,21 +97,15 @@ export default function LoginForm() {
           )}
         </div>
 
-        {error && (
-          <p className="mt-1 text-xs text-red-500">{error}</p>
-        )}
+        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="flex w-full items-center justify-center rounded bg-blue-600 py-2 text-white"
-        >
+        <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             "Login"
           )}
-        </button>
+        </Button>
       </form>
 
       <div className="mt-5 flex items-center justify-center text-sm">
@@ -117,10 +114,10 @@ export default function LoginForm() {
         <div className="mr-6 flex-grow border-t border-gray-300"></div>
       </div>
 
-      <div className="mt-2 flex items-center justify-center gap-2 text-center text-sm">
+      <div className="mt-2 flex items-center justify-center text-center text-sm">
         <span>Don&apos;t have an account?</span>
-        <Link href="/register" className="font-semibold text-blue-600">
-          Sign up here
+        <Link href="/register" className="font-semibold">
+          <Button variant="link">Register Here</Button>
         </Link>
       </div>
     </div>

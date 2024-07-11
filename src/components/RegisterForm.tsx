@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { registerSchema } from "@/schemas/zod";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
@@ -39,7 +42,7 @@ export default function RegisterForm() {
         throw new Error(errorData.error || "Registration failed");
       }
 
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.error("Registration error:", error);
     } finally {
@@ -53,17 +56,12 @@ export default function RegisterForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex gap-4">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              First Name
-            </label>
-            <input
+            <Label htmlFor="first_name">First Name</Label>
+            <Input
               id="first_name"
               {...register("first_name")}
               placeholder="First Name"
-              className="w-full rounded border p-2"
+              className="w-full"
             />
             {errors.first_name && (
               <p className="mt-1 text-xs text-red-500">
@@ -72,17 +70,12 @@ export default function RegisterForm() {
             )}
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="last_name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Last Name
-            </label>
-            <input
+            <Label htmlFor="last_name">Last Name</Label>
+            <Input
               id="last_name"
               {...register("last_name")}
               placeholder="Last Name"
-              className="w-full rounded border p-2"
+              className="w-full"
             />
             {errors.last_name && (
               <p className="mt-1 text-xs text-red-500">
@@ -93,18 +86,13 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email Address
-          </label>
-          <input
+          <Label htmlFor="email">Email Address</Label>
+          <Input
             id="email"
             {...register("email")}
             type="email"
             placeholder="Email Address"
-            className="w-full rounded border p-2"
+            className="w-full"
           />
           {errors.email && (
             <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
@@ -112,18 +100,13 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
-          <input
+          <Label htmlFor="password">Password</Label>
+          <Input
             id="password"
             {...register("password")}
             type="password"
             placeholder="Enter your Password"
-            className="w-full rounded border p-2"
+            className="w-full"
           />
           {errors.password && (
             <p className="mt-1 text-xs text-red-500">
@@ -132,17 +115,13 @@ export default function RegisterForm() {
           )}
         </div>
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="flex w-full items-center justify-center rounded bg-blue-600 py-2 text-white"
-        >
+        <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             "Register Now"
           )}
-        </button>
+        </Button>
       </form>
 
       <div className="mt-5 flex items-center justify-center text-sm">
@@ -151,10 +130,10 @@ export default function RegisterForm() {
         <div className="mr-6 flex-grow border-t border-gray-300"></div>
       </div>
 
-      <div className="mt-2 flex items-center justify-center gap-2 text-center text-sm">
+      <div className="mt-2 flex items-center justify-center text-center text-sm">
         <span>Already have an account?</span>
-        <Link href="/" className="font-semibold text-blue-600">
-          Login here
+        <Link href="/" className="font-semibold">
+          <Button variant="link">Login Here</Button>
         </Link>
       </div>
     </div>
