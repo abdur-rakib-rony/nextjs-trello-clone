@@ -1,11 +1,13 @@
-import React from "react";
+import LinksBreadcrumb from "@/components/LinksBreadcrumb";
+import ProjectUsers from "@/components/ProjectUsers";
 
 interface Props {}
 
 const Dashboard: React.FC<Props> = () => {
   return (
     <div>
-      <p>Columns</p>
+      <LinksBreadcrumb urlLink="dashboard"/>
+      <ProjectUsers />
     </div>
   );
 };

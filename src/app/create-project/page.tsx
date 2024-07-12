@@ -86,7 +86,7 @@ export default function CreateProject() {
           description: result.message,
         });
         form.reset();
-        router.push("/dashboard");
+        router.push("/projects");
       } else {
         throw new Error(result.message);
       }
