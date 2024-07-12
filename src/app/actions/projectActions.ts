@@ -194,7 +194,7 @@ export async function removeMemberFromProject(
         id: "",
         status: "error",
         message:
-          "You don't have permission to remove members from this project.",
+          "You do not have permission to remove members from this project.",
       };
     }
 
@@ -273,7 +273,7 @@ export async function addMemberToProject(
       return {
         id: "",
         status: "error",
-        message: "You don't have permission to add members to this project.",
+        message: "You do not have permission to add members to this project.",
       };
     }
 
@@ -353,7 +353,7 @@ export async function deleteProject(
       return {
         id: "",
         status: "error",
-        message: "You don't have permission to delete this project.",
+        message: "You do not have permission to delete this project.",
       };
     }
 

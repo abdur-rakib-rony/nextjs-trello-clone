@@ -78,7 +78,7 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="w-1/2 rounded bg-slate-100 p-4"
+                className="w-1/2 rounded bg-gray-100 p-4"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <Badge className="bg-white text-xs uppercase text-black hover:text-white">

@@ -86,14 +86,15 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
-              className={`${task.priority === "High" ? "bg-red-50" : "bg-white"} mb-2`}
+              className={`${task.priority === "High" ? "bg-green-100" : task.priority === "Urgent" ? "bg-red-100" : "bg-white"} mb-2`}
             >
               <CardHeader>
                 <CardTitle>{task.name}</CardTitle>
                 <CardDescription>{task.projectName}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Badge>Priority: {task.priority}</Badge>
+                <p className="text-gray-500 font-medium capitalize text-xs">Status: {task.status}</p>
+                <p className="text-gray-500 font-medium capitalize text-xs mt-2">Priority: <Badge>{task.priority}</Badge></p>
               </CardContent>
             </Card>
           </DialogTrigger>
