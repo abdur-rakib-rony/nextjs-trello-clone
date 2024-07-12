@@ -4,17 +4,26 @@ import React, { useState, useEffect } from "react";
 import { IProject } from "@/models/Project";
 import { IUser } from "@/models/User";
 import moment from "moment";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import {
   addMemberToProject,
+  deleteProject,
   removeMemberFromProject,
 } from "@/app/actions/projectActions";
 import { getAllUsers } from "@/app/actions/userActions";
 import MemberList from "./MemberList";
 import MemberSelect from "./MemberSelect";
 import Link from "next/link";
+import { X } from "lucide-react";
 
 interface ProjectCardProps {
   project: IProject;
@@ -98,13 +107,44 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const result = await deleteProject(project._id.toString());
+      if (result.status === "success") {
+        toast({
+          title: "Success",
+          description: result.message,
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred while delete project.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
-    <Card className="w-full">
+    <Card className="md:w-[350px]">
+      <div className="flex items-center justify-end">
+        <Button onClick={handleDelete} variant="outline" size="icon">
+          <X color="red" />
+        </Button>
+      </div>
       <CardHeader>
         <CardTitle>{project.name}</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Created {moment(project.createdAt).format("DD-MM-YYYY")}
-        </p>
+        <CardDescription>
+          Created {moment(project.createdAt).format("MMMM DD, YYYY")}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <h3 className="mb-2 font-semibold">Members:</h3>

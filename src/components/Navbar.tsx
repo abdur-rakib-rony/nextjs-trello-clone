@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ProfileMenu from "./ProfileMenu";
 
 const Navbar = () => {
@@ -7,16 +8,14 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <h1>Trenny</h1>
           <div className="flex space-x-4">
-            <button className="rounded px-3 py-2 text-gray-700 hover:bg-gray-100">
-              Projects
-            </button>
-            <button className="rounded px-3 py-2 text-gray-700 hover:bg-gray-100">
-              Teams
-            </button>
+            <Link href="/projects">Projects</Link>
           </div>
-          <button className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+          <Link
+            href="/create-project"
+            className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          >
             Create
-          </button>
+          </Link>
         </div>
         <div className="flex items-center space-x-4">
           <button className="rounded p-2 text-gray-600 hover:bg-gray-100">

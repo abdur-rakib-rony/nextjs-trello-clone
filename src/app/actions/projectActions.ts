@@ -246,18 +246,20 @@ export async function addMemberToProject(
       };
     }
 
-    if (!project.members.some(
-      (member: string) => member.toString() === userId.toString(),
-    )) {
+    if (
+      !project.members.some(
+        (member: string) => member.toString() === userId.toString(),
+      )
+    ) {
       return {
         status: "error",
         message: "You don't have permission to add members to this project.",
       };
     }
 
-    if (project.members.some(
-      (member: string) => member.toString() === memberId,
-    )) {
+    if (
+      project.members.some((member: string) => member.toString() === memberId)
+    ) {
       return {
         status: "error",
         message: "This member is already in the project.",
@@ -285,6 +287,59 @@ export async function addMemberToProject(
     };
   } catch (error) {
     console.error("Error adding member to project:", error);
+    return {
+      status: "error",
+      message: "An unexpected error occurred.",
+    };
+  }
+}
+
+export async function deleteProject(
+  projectId: string,
+): Promise<CreateProjectResult> {
+  try {
+    await connectToDB();
+
+    const user = await getCurrentUser();
+    const userId = new ObjectId(user._id);
+
+    if (!ObjectId.isValid(projectId)) {
+      return {
+        status: "error",
+        message: "Invalid project ID format.",
+      };
+    }
+
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return {
+        status: "error",
+        message: "Project not found.",
+      };
+    }
+
+    if (
+      !project.members.some(
+        (member: string) => member.toString() === userId.toString(),
+      )
+    ) {
+      return {
+        status: "error",
+        message: "You don't have permission to delete this project.",
+      };
+    }
+
+    await Project.findByIdAndDelete(projectId);
+
+    revalidatePath("/projects");
+
+    return {
+      status: "success",
+      message: "Project deleted successfully.",
+    };
+  } catch (error) {
+    console.error("Error deleting project:", error);
     return {
       status: "error",
       message: "An unexpected error occurred.",
