@@ -1,3 +1,4 @@
+import Projects from "@/app/projects/page";
 import LinksBreadcrumb from "@/components/LinksBreadcrumb";
 
 interface Props {}
@@ -5,7 +6,8 @@ interface Props {}
 const Dashboard: React.FC<Props> = () => {
   return (
     <div>
-      <LinksBreadcrumb urlLink="dashboard" />
+      <LinksBreadcrumb name="dashboard" link="/dashboard" />
+      <Projects />
     </div>
   );
 };

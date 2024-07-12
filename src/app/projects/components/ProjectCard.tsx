@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -107,7 +106,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleProjectDelete = async () => {
     try {
       const result = await deleteProject(project._id.toString());
       if (result.status === "success") {
@@ -136,7 +135,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <Card className="md:w-[350px]">
       <div className="flex items-center justify-end">
-        <Button onClick={handleDelete} variant="outline" size="icon">
+        <Button onClick={handleProjectDelete} variant="outline" size="icon">
           <X color="red" />
         </Button>
       </div>
@@ -162,7 +161,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             <Button disabled={!selectedMember} onClick={handleAddMember}>
               Add Member
             </Button>
-            <Link href={`/projects/${project._id.toString()}`}>
+            <Link href={`/dashboard/${project._id.toString()}`}>
               <Button variant="ghost">View Project</Button>
             </Link>
           </div>

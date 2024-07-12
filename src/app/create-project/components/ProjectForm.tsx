@@ -74,7 +74,7 @@ const ProjectForm = () => {
           description: result.message,
         });
         form.reset();
-        router.push("/projects");
+        router.push(`/dashboard/${result.id}`);
       } else {
         throw new Error(result.message);
       }

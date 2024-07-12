@@ -27,6 +27,15 @@ export async function getColumns(): Promise<IColumn[]> {
 export async function createColumn(name: string): Promise<CreateColumnResult> {
   try {
     await connectToDB();
+    const columnCount = await Column.countDocuments();
+
+    if (columnCount >= 5) {
+      return {
+        status: "error",
+        message: "Maximum of 5 columns reached",
+      };
+    }
+
     const newColumn = new Column({ name });
     await newColumn.save();
     return {

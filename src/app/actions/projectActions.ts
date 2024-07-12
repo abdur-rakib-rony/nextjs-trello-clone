@@ -14,6 +14,7 @@ interface CreateProjectInput {
 }
 
 interface CreateProjectResult {
+  id: string;
   status: "success" | "error";
   message: string;
 }
@@ -40,6 +41,7 @@ export async function createProject(
     const existingProject = await Project.findOne({ name });
     if (existingProject) {
       return {
+        id: "",
         status: "error",
         message: "A project with this name already exists.",
       };
@@ -58,6 +60,7 @@ export async function createProject(
     await newProject.save();
 
     return {
+      id: newProject._id,
       status: "success",
       message: "Project created successfully",
     };
@@ -166,6 +169,7 @@ export async function removeMemberFromProject(
 
     if (!ObjectId.isValid(projectId) || !ObjectId.isValid(memberId)) {
       return {
+        id: "",
         status: "error",
         message: "Invalid project ID or member ID format.",
       };
@@ -175,6 +179,7 @@ export async function removeMemberFromProject(
 
     if (!project) {
       return {
+        id: "",
         status: "error",
         message: "Project not found.",
       };
@@ -186,9 +191,18 @@ export async function removeMemberFromProject(
       )
     ) {
       return {
+        id: "",
         status: "error",
         message:
           "You don't have permission to remove members from this project.",
+      };
+    }
+
+    if (userId.toString() === memberId) {
+      return {
+        id: "",
+        status: "error",
+        message: "You cannot remove yourself from the project.",
       };
     }
 
@@ -200,20 +214,23 @@ export async function removeMemberFromProject(
 
     if (!updatedProject) {
       return {
+        id: "",
         status: "error",
         message: "Failed to update project.",
       };
     }
 
-    revalidatePath("/projects");
+    revalidatePath("/dashboard");
 
     return {
+      id: "",
       status: "success",
       message: "Member removed from project successfully.",
     };
   } catch (error) {
     console.error("Error removing member from project:", error);
     return {
+      id: "",
       status: "error",
       message: "An unexpected error occurred.",
     };
@@ -232,6 +249,7 @@ export async function addMemberToProject(
 
     if (!ObjectId.isValid(projectId) || !ObjectId.isValid(memberId)) {
       return {
+        id: "",
         status: "error",
         message: "Invalid project ID or member ID format.",
       };
@@ -241,6 +259,7 @@ export async function addMemberToProject(
 
     if (!project) {
       return {
+        id: "",
         status: "error",
         message: "Project not found.",
       };
@@ -252,6 +271,7 @@ export async function addMemberToProject(
       )
     ) {
       return {
+        id: "",
         status: "error",
         message: "You don't have permission to add members to this project.",
       };
@@ -261,6 +281,7 @@ export async function addMemberToProject(
       project.members.some((member: string) => member.toString() === memberId)
     ) {
       return {
+        id: "",
         status: "error",
         message: "This member is already in the project.",
       };
@@ -274,20 +295,23 @@ export async function addMemberToProject(
 
     if (!updatedProject) {
       return {
+        id: "",
         status: "error",
         message: "Failed to update project.",
       };
     }
 
-    revalidatePath("/projects");
+    revalidatePath("/dashboard");
 
     return {
+      id: "",
       status: "success",
       message: "Member added to project successfully.",
     };
   } catch (error) {
     console.error("Error adding member to project:", error);
     return {
+      id: "",
       status: "error",
       message: "An unexpected error occurred.",
     };
@@ -305,6 +329,7 @@ export async function deleteProject(
 
     if (!ObjectId.isValid(projectId)) {
       return {
+        id: "",
         status: "error",
         message: "Invalid project ID format.",
       };
@@ -314,6 +339,7 @@ export async function deleteProject(
 
     if (!project) {
       return {
+        id: "",
         status: "error",
         message: "Project not found.",
       };
@@ -325,6 +351,7 @@ export async function deleteProject(
       )
     ) {
       return {
+        id: "",
         status: "error",
         message: "You don't have permission to delete this project.",
       };
@@ -332,15 +359,17 @@ export async function deleteProject(
 
     await Project.findByIdAndDelete(projectId);
 
-    revalidatePath("/projects");
+    revalidatePath("/dashboard");
 
     return {
+      id: "",
       status: "success",
       message: "Project deleted successfully.",
     };
   } catch (error) {
     console.error("Error deleting project:", error);
     return {
+      id: "",
       status: "error",
       message: "An unexpected error occurred.",
     };

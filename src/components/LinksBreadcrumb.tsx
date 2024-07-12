@@ -6,7 +6,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const LinksBreadcrumb = ({ urlLink }: any) => {
+const LinksBreadcrumb = ({ name, link }: { name: string; link: string }) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -15,8 +15,8 @@ const LinksBreadcrumb = ({ urlLink }: any) => {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink className="capitalize" href={`/${urlLink}`}>
-            {urlLink}
+          <BreadcrumbLink className="capitalize" href={link}>
+            {name}
           </BreadcrumbLink>
         </BreadcrumbItem>
       </BreadcrumbList>

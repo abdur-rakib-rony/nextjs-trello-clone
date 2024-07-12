@@ -18,3 +18,10 @@ export const projectFormSchema = z.object({
   name: z.string().min(1, "Project name is required"),
   members: z.array(z.string()).default([]),
 });
+
+export const columnFormSchema = z.object({
+  columnName: z
+    .string()
+    .min(1, "Column name cannot be empty")
+    .max(50, "Column name must be less than 50 characters"),
+});
