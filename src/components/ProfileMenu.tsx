@@ -26,11 +26,7 @@ export default function ProfileMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel className="flex items-center">
-          <User className="mr-2 h-4 w-4" /> {session?.user?.name}
-        </DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">
             <Link href="/dashboard" className="flex items-center">
               <Layers3 className="mr-2 h-4 w-4" />
