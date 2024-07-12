@@ -5,18 +5,25 @@ import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { DraggableTask } from "./DraggableTask";
 import { updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/use-toast";
+import { removeColumn } from "@/app/actions/columnActions";
 
 interface Column {
-  id: string;
+  _id: string;
   name: string;
 }
 
 interface TaskListsProps {
   alltasks: ITask[];
-  columns: Column[];
+  columns: any[];
 }
 
 export function TaskLists({ alltasks, columns }: TaskListsProps) {
+  const { toast } = useToast();
+
   const onDragEnd = async (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
@@ -37,18 +44,55 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
     });
   };
 
+  const handleRemoveColumn = async (columnId: string) => {
+    try {
+      const result = await removeColumn(columnId);
+      if (result.status === "success") {
+        toast({
+          title: "Success",
+          description: result.message,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error removing column:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred while removing the column.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex gap-4">
         {columns.map((column: Column) => (
-          <Droppable key={column.id} droppableId={column.name}>
+          <Droppable key={column._id} droppableId={column.name}>
             {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="w-1/2 rounded bg-gray-100 p-4"
+                className="w-1/2 rounded bg-slate-100 p-4"
               >
-                <h2 className="mb-4 text-xl font-bold">{column.name}</h2>
+                <div className="mb-4 flex items-center justify-between">
+                  <Badge className="bg-white text-xs uppercase text-black hover:text-white">
+                    {column.name}
+                  </Badge>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-6 w-6 rounded-full"
+                    onClick={() => handleRemoveColumn(column._id)}
+                  >
+                    <X size={15} />
+                  </Button>
+                </div>
                 {alltasks
                   .filter(
                     (task: ITask) =>

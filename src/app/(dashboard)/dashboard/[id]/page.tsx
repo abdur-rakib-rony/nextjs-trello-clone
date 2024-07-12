@@ -6,6 +6,7 @@ import React from "react";
 import CreateButton from "./components/column/CreateButton";
 import CreateTask from "./components/kanban/CreateTask";
 import Tasks from "./components/kanban/Tasks";
+import { getAllUsers } from "@/app/actions/userActions";
 
 interface ProjectParams {
   id: string;
@@ -13,6 +14,7 @@ interface ProjectParams {
 
 const Project = async ({ params }: { params: ProjectParams }) => {
   const { id } = params;
+  const allUsers = await getAllUsers();
   const project: IProject | null = await getProjectById(id);
 
   if (!project) {
@@ -26,7 +28,7 @@ const Project = async ({ params }: { params: ProjectParams }) => {
         <h1 className="mt-4 text-base font-semibold">{project.name}</h1>
       </div>
       <div className="flex items-center gap-4">
-        <ProjectUsers users={project.members} />
+        <ProjectUsers users={project.members} project={project} allUsers={allUsers}/>
         <CreateButton />
         <CreateTask projectName={project.name} />
       </div>

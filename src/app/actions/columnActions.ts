@@ -52,3 +52,33 @@ export async function createColumn(name: string): Promise<CreateColumnResult> {
     };
   }
 }
+
+export async function removeColumn(
+  columnId: string,
+): Promise<CreateColumnResult> {
+  try {
+    await connectToDB();
+
+    const deletedColumn = await Column.findByIdAndDelete(columnId);
+
+    if (!deletedColumn) {
+      return {
+        status: "error",
+        message: "Column not found",
+      };
+    }
+
+    revalidatePath("/dashboard");
+
+    return {
+      status: "success",
+      message: "Column removed successfully",
+    };
+  } catch (error) {
+    console.error("Error removing column:", error);
+    return {
+      status: "error",
+      message: "Failed to remove column",
+    };
+  }
+}
