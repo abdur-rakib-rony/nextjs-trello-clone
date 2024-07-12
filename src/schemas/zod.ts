@@ -25,3 +25,13 @@ export const columnFormSchema = z.object({
     .min(1, "Column name cannot be empty")
     .max(50, "Column name must be less than 50 characters"),
 });
+
+export const taskFormSchema = z.object({
+  name: z.string().min(1, "Task name is required"),
+  projectName: z.string().optional(),
+  summary: z.string().optional(),
+  description: z.string().optional(),
+  assigneeName: z.string().optional(),
+  priority: z.enum(["Low", "Medium", "High", "Urgent"]).optional(),
+  teamName: z.string().optional(),
+});

@@ -1,10 +1,11 @@
 "use server";
 
-import { connectToDB } from '@/lib/db';
-import Task, { ITask } from '@/models/Task';
-import { Types } from 'mongoose';
+import { connectToDB } from "@/lib/db";
+import Task, { ITask } from "@/models/Task";
+import { Types } from "mongoose";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 type CreateTaskInput = {
   name: string;
@@ -27,7 +28,7 @@ type UpdateTaskInput = Partial<{
   labels: string[];
   priority: "Low" | "Medium" | "High" | "Urgent";
   teamName: string;
-  status: "pending" | "progress" | "completed";
+  status: "string";
   newComment: string;
 }>;
 
@@ -39,7 +40,9 @@ async function getCurrentUser() {
   return session.user;
 }
 
-export async function createTask(taskInput: CreateTaskInput): Promise<{ success: boolean; message: string; taskId?: string }> {
+export async function createTask(
+  taskInput: CreateTaskInput,
+): Promise<{ success: boolean; message: string; taskId?: string }> {
   try {
     await connectToDB();
 
@@ -47,19 +50,20 @@ export async function createTask(taskInput: CreateTaskInput): Promise<{ success:
 
     const newTask = new Task(taskInput);
 
-    // Add creation activity with the current user's ID
-    newTask.activities = [{
-      action: 'Task created',
-      timestamp: new Date(),
-      user: new Types.ObjectId(user.id),
-    }];
+    newTask.activities = [
+      {
+        action: "Task created",
+        timestamp: new Date(),
+        user: new Types.ObjectId(user.id),
+      },
+    ];
 
-    // Set the reporter name to the current user's name if not provided
     if (!newTask.reporterName && user.name) {
       newTask.reporterName = user.name;
     }
 
     const savedTask = await newTask.save();
+    revalidatePath("/dashboard");
 
     return {
       success: true,
@@ -67,7 +71,7 @@ export async function createTask(taskInput: CreateTaskInput): Promise<{ success:
       taskId: savedTask._id.toString(),
     };
   } catch (error) {
-    console.error('Error creating task:', error);
+    console.error("Error creating task:", error);
     return {
       success: false,
       message: `Failed to create task: ${(error as Error).message}`,
@@ -75,7 +79,10 @@ export async function createTask(taskInput: CreateTaskInput): Promise<{ success:
   }
 }
 
-export async function updateTask(taskId: string, updates: UpdateTaskInput): Promise<{ success: boolean; message: string; task?: ITask }> {
+export async function updateTask(
+  taskId: string,
+  updates: UpdateTaskInput,
+): Promise<{ success: boolean; message: string; task?: ITask }> {
   try {
     await connectToDB();
     const user = await getCurrentUser();
@@ -85,12 +92,14 @@ export async function updateTask(taskId: string, updates: UpdateTaskInput): Prom
       return { success: false, message: "Task not found." };
     }
 
-    const activities: { action: string; timestamp: Date; user: Types.ObjectId }[] = [];
+    const activities: {
+      action: string;
+      timestamp: Date;
+      user: Types.ObjectId;
+    }[] = [];
 
-    // Update task fields
     Object.entries(updates).forEach(([key, value]) => {
-      if (key === 'newComment') {
-        // Handle new comment separately
+      if (key === "newComment") {
         return;
       }
       if (value !== undefined && key in task) {
@@ -103,7 +112,6 @@ export async function updateTask(taskId: string, updates: UpdateTaskInput): Prom
       }
     });
 
-    // Handle assignment separately to set reporter
     if (updates.assigneeName) {
       task.reporterName = user.name;
       activities.push({
@@ -113,7 +121,6 @@ export async function updateTask(taskId: string, updates: UpdateTaskInput): Prom
       });
     }
 
-    // Add new comment if provided
     if (updates.newComment) {
       task.comments.push({
         text: updates.newComment,
@@ -121,45 +128,59 @@ export async function updateTask(taskId: string, updates: UpdateTaskInput): Prom
         timestamp: new Date(),
       });
       activities.push({
-        action: 'New comment added',
+        action: "New comment added",
         timestamp: new Date(),
         user: new Types.ObjectId(user.id),
       });
     }
 
-    // Add all activities
     task.activities.push(...activities);
 
     await task.save();
 
-    return { 
-      success: true, 
+    revalidatePath("/dashboard");
+
+    return {
+      success: true,
       message: "Task updated successfully.",
       task: task.toObject(),
     };
   } catch (error) {
-    console.error('Error updating task:', error);
-    return { success: false, message: `Failed to update task: ${(error as Error).message}` };
+    console.error("Error updating task:", error);
+    return {
+      success: false,
+      message: `Failed to update task: ${(error as Error).message}`,
+    };
   }
 }
 
+export async function getAllTasks(): Promise<ITask[]> {
+  try {
+    await connectToDB();
+    const tasks = await Task.find({}).sort({ createdAt: -1 }).exec();
 
-// Get all tasks
-// const tasks = await getTasks();
+    const tasksPlain = tasks.map((task) => {
+      const taskObj = task.toObject();
+      return {
+        ...taskObj,
+        _id: taskObj._id.toString(),
+        user: taskObj.user ? taskObj.user.toString() : undefined,
+        activities: taskObj.activities?.map((activity: any) => ({
+          ...activity,
+          _id: activity._id.toString(),
+          user: activity.user.toString(),
+        })),
+        comments: taskObj.comments?.map((comment: any) => ({
+          ...comment,
+          _id: comment._id.toString(),
+          user: comment.user.toString(),
+        })),
+      };
+    });
 
-// Create a new task
-// const createResult = await createTask({
-//   name: "New Task",
-//   projectName: "Project X",
-//   summary: "This is a new task",
-//   priority: "High",
-// });
-
-// Update a task
-// const updateResult = await updateTask("taskId", {
-//   name: "Updated Task Name",
-//   assigneeName: "John Doe",
-//   priority: "Urgent",
-//   status: "progress",
-//   newComment: "This task has been updated and is now urgent.",
-// });
+    return tasksPlain;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    throw error;
+  }
+}

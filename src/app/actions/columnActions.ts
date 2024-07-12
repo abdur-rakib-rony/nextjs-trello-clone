@@ -1,6 +1,7 @@
 "use server";
 import { connectToDB } from "@/lib/db";
 import Column, { IColumn } from "@/models/Column";
+import { revalidatePath } from "next/cache";
 
 interface CreateColumnResult {
   status: "success" | "error";
@@ -36,8 +37,9 @@ export async function createColumn(name: string): Promise<CreateColumnResult> {
       };
     }
 
-    const newColumn = new Column({ name });
+    const newColumn = new Column({ name: name.toLowerCase() });
     await newColumn.save();
+    revalidatePath("/dashboard");
     return {
       status: "success",
       message: "Column created successfully",
