@@ -134,7 +134,7 @@ const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
   };
 
   return (
-    <Card className="w-full max-w-sm shadow-lg transition-shadow duration-300 hover:shadow-xl md:max-w-md lg:max-w-lg xl:max-w-xl">
+    <Card className="w-full h-fit max-w-sm shadow-lg transition-shadow duration-300 hover:shadow-xl md:max-w-md lg:max-w-lg xl:max-w-xl">
       <div className="flex items-center justify-between rounded-t-lg border-b bg-gray-50 p-4">
         <CardTitle className="text-xl font-semibold text-gray-800">
           {project.name}
