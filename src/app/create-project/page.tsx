@@ -1,15 +1,15 @@
+import { FC } from "react";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import ProjectForm from "./components/ProjectForm";
 import UserProjects from "../projects/components/UserProjects";
 import LinksBreadcrumb from "@/components/LinksBreadcrumb";
 
-export default function CreateProject() {
+const CreateProject: FC = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="max-auto container py-6">
@@ -30,4 +30,6 @@ export default function CreateProject() {
       </div>
     </div>
   );
-}
+};
+
+export default CreateProject;

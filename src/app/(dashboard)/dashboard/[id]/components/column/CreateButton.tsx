@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import ColumnCreator from "./ColumnCreator";
 
-export default function CreateButton() {
+const CreateButton: FC = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,4 +25,6 @@ export default function CreateButton() {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default CreateButton;

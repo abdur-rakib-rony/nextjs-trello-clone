@@ -1,7 +1,5 @@
 "use client";
-
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +22,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { createProject } from "@/app/actions/projectActions";
 import { getAllUsers } from "@/app/actions/userActions";
 import { IUser } from "@/models/User";
@@ -33,7 +30,7 @@ import { projectFormSchema } from "@/schemas/zod";
 
 type FormValues = z.infer<typeof projectFormSchema>;
 
-const ProjectForm = () => {
+const ProjectForm: FC = () => {
   const { toast } = useToast();
   const [users, setUsers] = useState<IUser[]>([]);
 

@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { IProject } from "@/models/Project";
 import { IUser } from "@/models/User";
 import moment from "moment";
@@ -9,7 +8,6 @@ import {
   CardContent,
   CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,7 +29,7 @@ interface ProjectCardProps {
   project: IProject;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+const ProjectCard: FC<ProjectCardProps> = ({ project }) => {
   const { toast } = useToast();
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedMember, setSelectedMember] = useState<string>("");
@@ -203,46 +201,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         </Link>
       </CardFooter>
     </Card>
-    // <Card className="md:w-[350px]">
-    //   <div className="flex items-center justify-end">
-    //     <Button
-    //       onClick={handleProjectDelete}
-    //       variant="outline"
-    //       size="icon"
-    //       className="h-6 w-6 rounded-full m-2"
-    //     >
-    //       <Trash size={14} className="hover:text-red-500" />
-    //     </Button>
-    //   </div>
-    //   <CardHeader>
-    //     <CardTitle>{project.name}</CardTitle>
-    //     <CardDescription>
-    //       Created {moment(project.createdAt).format("MMMM DD, YYYY")}
-    //     </CardDescription>
-    //   </CardHeader>
-    //   <CardContent>
-    //     <h3 className="mb-2 font-semibold">Members:</h3>
-    //     <MemberList
-    //       members={project.members as IUser[]}
-    //       onRemoveMember={handleRemoveMember}
-    //     />
-    //     <div className="mt-4">
-    //       <MemberSelect
-    //         users={users}
-    //         selectedMember={selectedMember}
-    //         onSelectMember={setSelectedMember}
-    //       />
-    //       <div className="mt-4 flex items-center justify-between gap-4">
-    //         <Button disabled={!selectedMember} onClick={handleAddMember}>
-    //           Add Member
-    //         </Button>
-    //         <Link href={`/dashboard/${project._id.toString()}`}>
-    //           <Button variant="ghost">View Project</Button>
-    //         </Link>
-    //       </div>
-    //     </div>
-    //   </CardContent>
-    // </Card>
   );
 };
 

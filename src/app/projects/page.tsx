@@ -1,3 +1,4 @@
+import { FC } from "react";
 import LinksBreadcrumb from "@/components/LinksBreadcrumb";
 import UserProjects from "./components/UserProjects";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import ProjectForm from "../create-project/components/ProjectForm";
 
-const Projects = async () => {
+const Projects: FC  = async () => {
   return (
     <div className="container mx-auto py-6">
       <LinksBreadcrumb name="dashboard" link="/projects" />

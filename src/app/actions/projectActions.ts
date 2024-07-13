@@ -47,20 +47,16 @@ export async function createProject(
       };
     }
 
-    const projectData: { name: string; members?: Types.ObjectId[] } = { name };
-
-    if (members && members.length > 0) {
-      projectData.members = members.map((id) => new Types.ObjectId(id));
-    }
+    const memberObjectIds = members && members.length > 0 ? members.map((id) => new Types.ObjectId(id)) : [];
 
     const newProject = new Project({
       name,
-      members: [userId],
+      members: [userId, ...memberObjectIds],
     });
     await newProject.save();
 
-    revalidatePath("/create-project")
-    revalidatePath("/projects")
+    revalidatePath("/create-project");
+    revalidatePath("/projects");
 
     return {
       id: newProject._id,

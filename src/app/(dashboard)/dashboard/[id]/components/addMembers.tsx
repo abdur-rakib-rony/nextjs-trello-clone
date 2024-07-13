@@ -31,10 +31,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { addMemberToProject } from "@/app/actions/projectActions";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IUser } from "@/models/User";
 
 interface AddMembersProps {
   projectId: string;
-  allUsers: any;
+  allUsers: IUser[];
 }
 
 const memberSchema = z.object({
@@ -112,7 +113,7 @@ const AddMembers: React.FC<AddMembersProps> = ({ projectId, allUsers }) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent position="popper">
-                          {allUsers.map((user: any) => (
+                          {allUsers.map((user: IUser) => (
                             <SelectItem
                               key={user._id.toString()}
                               value={user._id.toString()}

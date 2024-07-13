@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { getUserProjects } from "@/app/actions/projectActions";
 import { IProject } from "@/models/Project";
 import ProjectCard from "./ProjectCard";
@@ -9,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const UserProjects = async () => {
+const UserProjects: FC = async () => {
   const allprojects = await getUserProjects();
 
   if (allprojects?.length === 0) return null;

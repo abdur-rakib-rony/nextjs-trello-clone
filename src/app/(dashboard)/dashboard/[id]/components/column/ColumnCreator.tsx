@@ -1,4 +1,5 @@
 "use client";
+import { FC } from "react";
 import { createColumn } from "@/app/actions/columnActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { columnFormSchema } from "@/schemas/zod";
 
-const ColumnCreator: React.FC = () => {
+const ColumnCreator: FC = () => {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof columnFormSchema>>({

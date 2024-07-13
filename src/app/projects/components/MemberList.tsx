@@ -1,3 +1,4 @@
+import { FC } from "react";
 import MemberItem from "./MemberItem";
 import { IUser } from "@/models/User";
 
@@ -6,7 +7,7 @@ interface MemberListProps {
   onRemoveMember: (memberId: string) => void;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ members, onRemoveMember }) => (
+const MemberList: FC<MemberListProps> = ({ members, onRemoveMember }) => (
   <div className="flex flex-wrap gap-2">
     {members.map((member) => (
       <MemberItem

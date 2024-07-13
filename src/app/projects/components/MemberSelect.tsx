@@ -1,3 +1,4 @@
+import { FC } from "react";
 import {
   Select,
   SelectContent,
@@ -13,7 +14,7 @@ interface MemberSelectProps {
   onSelectMember: (value: string) => void;
 }
 
-const MemberSelect: React.FC<MemberSelectProps> = ({
+const MemberSelect: FC<MemberSelectProps> = ({
   users,
   selectedMember,
   onSelectMember,

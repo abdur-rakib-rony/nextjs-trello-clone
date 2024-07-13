@@ -7,6 +7,7 @@ import CreateButton from "./components/column/CreateButton";
 import CreateTask from "./components/kanban/CreateTask";
 import Tasks from "./components/kanban/Tasks";
 import { getAllUsers } from "@/app/actions/userActions";
+import { IUser } from "@/models/User";
 
 interface ProjectParams {
   id: string;
@@ -14,7 +15,7 @@ interface ProjectParams {
 
 const Project = async ({ params }: { params: ProjectParams }) => {
   const { id } = params;
-  const allUsers = await getAllUsers();
+  const allUsers: IUser[] = await getAllUsers();
   const project: IProject | null = await getProjectById(id);
 
   if (!project) {
@@ -24,10 +25,10 @@ const Project = async ({ params }: { params: ProjectParams }) => {
   return (
     <div className="py-6">
       <LinksBreadcrumb name={project.name} link={`/dashboard/${id}`} />
-      <h1 className="mt-2 text-xl mb-4 font-semibold">{project.name}</h1>
+      <h1 className="mb-4 mt-2 text-xl font-semibold">{project.name}</h1>
       <div className="flex items-center gap-4">
         <ProjectUsers
-          users={project.members}
+          users={project.members as IUser[]}
           project={project}
           allUsers={allUsers}
         />

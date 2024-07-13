@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { Label } from "./ui/label";
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-export default function RegisterForm() {
+const RegisterForm: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const {
@@ -138,4 +138,6 @@ export default function RegisterForm() {
       </div>
     </div>
   );
-}
+};
+
+export default RegisterForm;
