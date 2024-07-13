@@ -2,13 +2,13 @@ import { Button } from "@/components/ui/button";
 import { getFirstCharacter } from "@/utils/getFirstCharacter";
 
 interface MemberAvatarProps {
-  firstName: string | undefined;
+  name: string | undefined;
 }
 
-const MemberAvatar: React.FC<MemberAvatarProps> = ({ firstName }) => {
+const MemberAvatar: React.FC<MemberAvatarProps> = ({ name }) => {
   return (
-    <Button variant="outline" size="icon" className="rounded-full">
-      {getFirstCharacter(firstName)}
+    <Button variant="outline" size="icon" className="rounded-full border-blue-200">
+      {getFirstCharacter(name)}
     </Button>
   );
 };

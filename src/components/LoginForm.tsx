@@ -97,7 +97,11 @@ export default function LoginForm() {
           )}
         </div>
 
-        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+        {error && (
+          <p className="mt-1 text-xs text-red-500">
+            {error === "CredentialsSignin" ? "Invalid Credentials" : error}
+          </p>
+        )}
 
         <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? (

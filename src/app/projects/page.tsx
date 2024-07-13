@@ -15,11 +15,10 @@ const Projects = async () => {
   return (
     <div className="container mx-auto py-6">
       <LinksBreadcrumb name="dashboard" link="/projects" />
-      <div>
-        <h1 className="mb-4 mt-2 text-xl font-semibold">My Projects</h1>
+      <div className="mt-4">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="mb-4">Create Project</Button>
+            <Button variant="outline">Create Project</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

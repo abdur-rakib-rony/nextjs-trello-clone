@@ -18,14 +18,14 @@ export default function ProfileMenu() {
   const { data: session } = useSession();
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          {getFirstCharacter(session?.user?.name)}
+          {getFirstCharacter(session?.user?.name || "Not Avaiable")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">

@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -27,18 +26,7 @@ export default function CreateProject() {
           </CardHeader>
           <ProjectForm />
         </Card>
-
-        <Card className="mt-4 border-none shadow-none">
-          <CardHeader className="m-0 p-0">
-            <CardTitle className="mt-4 text-xl">My Projects</CardTitle>
-            <CardDescription>
-              Explore your existing projects here
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="mt-4 p-0">
-            <UserProjects />
-          </CardContent>
-        </Card>
+        <UserProjects />
       </div>
     </div>
   );
