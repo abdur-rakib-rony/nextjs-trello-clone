@@ -54,7 +54,7 @@ const TaskSchema: Schema = new Schema({
   ],
   status: {
     type: String,
-    default: "pending",
+    default: "todo",
   },
 });
 

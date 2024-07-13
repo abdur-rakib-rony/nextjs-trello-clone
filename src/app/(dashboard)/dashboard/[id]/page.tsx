@@ -22,17 +22,19 @@ const Project = async ({ params }: { params: ProjectParams }) => {
   }
 
   return (
-    <div>
-      <div>
-        <LinksBreadcrumb name={project.name} link={`/dashboard/${id}`} />
-        <h1 className="mt-4 text-base font-semibold">{project.name}</h1>
-      </div>
+    <div className="py-6">
+      <LinksBreadcrumb name={project.name} link={`/dashboard/${id}`} />
+      <h1 className="mt-2 text-xl mb-4 font-semibold">{project.name}</h1>
       <div className="flex items-center gap-4">
-        <ProjectUsers users={project.members} project={project} allUsers={allUsers}/>
+        <ProjectUsers
+          users={project.members}
+          project={project}
+          allUsers={allUsers}
+        />
         <CreateButton />
         <CreateTask projectName={project.name} />
       </div>
-      <Tasks />
+      <Tasks projectName={project.name} />
     </div>
   );
 };

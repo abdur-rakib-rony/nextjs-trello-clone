@@ -48,7 +48,7 @@ export async function createTask(
 
     const user = await getCurrentUser();
 
-    const newTask = new Task(taskInput);
+    const newTask = new Task({ ...taskInput, status: "todo" });
 
     newTask.activities = [
       {
@@ -158,6 +158,43 @@ export async function getAllTasks(): Promise<ITask[]> {
   try {
     await connectToDB();
     const tasks = await Task.find({}).sort({ createdAt: -1 }).exec();
+
+    const tasksPlain = tasks.map((task) => {
+      const taskObj = task.toObject();
+      return {
+        ...taskObj,
+        _id: taskObj._id.toString(),
+        user: taskObj.user ? taskObj.user.toString() : undefined,
+        activities: taskObj.activities?.map((activity: any) => ({
+          ...activity,
+          _id: activity._id.toString(),
+          user: activity.user.toString(),
+        })),
+        comments: taskObj.comments?.map((comment: any) => ({
+          ...comment,
+          _id: comment._id.toString(),
+          user: comment.user.toString(),
+        })),
+      };
+    });
+
+    return tasksPlain;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    throw error;
+  }
+}
+
+export async function getTasksByProject({
+  projectName,
+}: {
+  projectName: string;
+}): Promise<ITask[]> {
+  try {
+    await connectToDB();
+    const tasks = await Task.find({ projectName })
+      .sort({ createdAt: -1 })
+      .exec();
 
     const tasksPlain = tasks.map((task) => {
       const taskObj = task.toObject();

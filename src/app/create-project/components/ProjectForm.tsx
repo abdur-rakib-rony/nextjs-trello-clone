@@ -52,11 +52,6 @@ const ProjectForm = () => {
         setUsers(allUsers);
       } catch (error) {
         console.error("Failed to fetch users:", error);
-        toast({
-          title: "Error",
-          description: "Failed to fetch users",
-          variant: "destructive",
-        });
       }
     }
 

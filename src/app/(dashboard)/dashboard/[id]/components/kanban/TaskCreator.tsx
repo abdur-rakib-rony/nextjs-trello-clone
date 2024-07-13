@@ -24,6 +24,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { taskFormSchema } from "@/schemas/zod";
 import { createTask } from "@/app/actions/taskActions";
+import { Loader2 } from "lucide-react";
 
 interface CreateTaskProps {
   projectName: string;
@@ -158,7 +159,11 @@ export default function TaskCreator({ projectName }: CreateTaskProps) {
         />
 
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Creating..." : "Create Task"}
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            "Create Task"
+          )}
         </Button>
       </form>
     </Form>

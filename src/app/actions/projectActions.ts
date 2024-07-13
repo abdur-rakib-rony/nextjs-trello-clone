@@ -220,7 +220,7 @@ export async function removeMemberFromProject(
       };
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath("/projects");
 
     return {
       id: "",
@@ -302,6 +302,7 @@ export async function addMemberToProject(
     }
 
     revalidatePath("/dashboard");
+    revalidatePath("/projects");
 
     return {
       id: "",
@@ -359,7 +360,7 @@ export async function deleteProject(
 
     await Project.findByIdAndDelete(projectId);
 
-    revalidatePath("/dashboard");
+    revalidatePath("/projects");
 
     return {
       id: "",

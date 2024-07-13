@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
 
   if (token) {
     if (url.pathname === "/" || url.pathname === "/register") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+      return NextResponse.redirect(new URL("/create-project", req.url));
     }
   } else {
     if (url.pathname === "/dashboard") {

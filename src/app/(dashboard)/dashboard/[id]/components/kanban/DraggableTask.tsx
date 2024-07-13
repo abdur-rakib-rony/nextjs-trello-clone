@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -46,7 +47,6 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
   const [description, setDescription] = useState(task.description || "");
   const [summary, setSummary] = useState(task.summary || "");
   const [comment, setComment] = useState("");
-  const [assignee, setAssignee] = useState(task.assigneeName || "");
   const [priority, setPriority] = useState<Priority>(
     (task.priority as Priority) || "Medium",
   );
@@ -56,7 +56,6 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
     const updates = {
       summary,
       description,
-      assigneeName: assignee,
       newComment: comment,
       priority,
       labels,
@@ -93,8 +92,12 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
                 <CardDescription>{task.projectName}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-500 font-medium capitalize text-xs">Status: {task.status}</p>
-                <p className="text-gray-500 font-medium capitalize text-xs mt-2">Priority: <Badge>{task.priority}</Badge></p>
+                <p className="text-xs font-medium capitalize text-gray-500">
+                  Status: {task.status}
+                </p>
+                <p className="mt-2 text-xs font-medium capitalize text-gray-500">
+                  Priority: <Badge>{task.priority}</Badge>
+                </p>
               </CardContent>
             </Card>
           </DialogTrigger>
@@ -103,7 +106,7 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
               <DialogTitle>{task.name}</DialogTitle>
               <DialogDescription>{task.projectName}</DialogDescription>
             </DialogHeader>
-            <div className="flex max-h-[60vh] flex-col overflow-y-scroll scrollbar-hide sm:max-w-[60vw] md:max-w-[600px]">
+            <div className="scrollbar-hide flex max-h-[60vh] flex-col overflow-y-scroll sm:max-w-[60vw] md:max-w-[600px]">
               <div className="grid gap-4 py-4">
                 <div>
                   <Label htmlFor="description" className="text-right">

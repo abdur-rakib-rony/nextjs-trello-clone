@@ -28,7 +28,7 @@ export default function ProfileMenu() {
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
           <DropdownMenuItem className="cursor-pointer">
-            <Link href="/dashboard" className="flex items-center">
+            <Link href="/projects" className="flex items-center">
               <Layers3 className="mr-2 h-4 w-4" />
               <span>Projects</span>
             </Link>

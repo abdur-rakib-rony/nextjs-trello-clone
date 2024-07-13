@@ -4,6 +4,7 @@ import ProjectCard from "./ProjectCard";
 
 const UserProjects = async () => {
   const allprojects = await getUserProjects();
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {allprojects?.map((project: IProject) => (
