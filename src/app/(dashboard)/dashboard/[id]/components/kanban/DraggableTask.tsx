@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { updateTask } from "@/app/actions/taskActions";
+import { deleteTask, updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
 import moment from "moment";
 import ClientUserSelector from "./ClientUserSelector";
@@ -67,6 +67,22 @@ const DraggableTask: FC<DraggableTaskProps> = ({ task, index }) => {
       toast({
         title: "Error",
         description: "Task not updated",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDelete = async () => {
+    const result = await deleteTask(task._id.toString());
+    if (result.success) {
+      toast({
+        title: "Task deleted",
+        description: result.message,
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to delete task",
         variant: "destructive",
       });
     }
@@ -247,7 +263,10 @@ const DraggableTask: FC<DraggableTaskProps> = ({ task, index }) => {
                 </div>
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="flex justify-between w-full">
+              <Button variant="destructive" onClick={handleDelete}>
+                Delete Task
+              </Button>
               <Button type="submit" onClick={handleSave}>
                 Save changes
               </Button>

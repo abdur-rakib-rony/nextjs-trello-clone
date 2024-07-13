@@ -245,3 +245,36 @@ export async function getAllTasks(): Promise<ITask[]> {
     throw error;
   }
 }
+
+export async function deleteTask(
+  taskId: string
+): Promise<{ success: boolean; message: string }> {
+  try {
+    await connectToDB();
+
+    const user = await getCurrentUser();
+    if (!user || !user.email) {
+      throw new Error("User not authenticated");
+    }
+
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return { success: false, message: "Task not found." };
+    }
+
+    await Task.findByIdAndDelete(taskId);
+
+    revalidatePath("/dashboard");
+
+    return {
+      success: true,
+      message: "Task deleted successfully.",
+    };
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    return {
+      success: false,
+      message: `Failed to delete task: ${(error as Error).message}`,
+    };
+  }
+}
