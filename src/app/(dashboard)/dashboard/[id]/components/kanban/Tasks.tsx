@@ -15,7 +15,7 @@ const Tasks = async ({ projectName }: any) => {
           <Terminal className="h-4 w-4" />
           <AlertTitle>No Tasks Available?</AlertTitle>
           <AlertDescription>
-            Don't worry, you can create your tasks from here.
+            Don&apos;t worry, you can create your tasks from here.
           </AlertDescription>
         </Alert>
       ) : (
