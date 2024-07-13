@@ -47,7 +47,10 @@ export async function createProject(
       };
     }
 
-    const memberObjectIds = members && members.length > 0 ? members.map((id) => new Types.ObjectId(id)) : [];
+    const memberObjectIds =
+      members && members.length > 0
+        ? members.map((id) => new Types.ObjectId(id))
+        : [];
 
     const newProject = new Project({
       name,

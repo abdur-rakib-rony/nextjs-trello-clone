@@ -1,8 +1,9 @@
+import { FC } from "react";
 import Link from "next/link";
 import RegisterForm from "@/components/RegisterForm";
 import { Button } from "@/components/ui/button";
 
-export default function Register() {
+const Register: FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-800 to-pink-400 md:flex md:items-center md:justify-center">
       <div className="container mx-auto flex flex-col space-y-4 py-10 md:flex-row md:space-y-0">
@@ -28,4 +29,6 @@ export default function Register() {
       </div>
     </div>
   );
-}
+};
+
+export default Register;

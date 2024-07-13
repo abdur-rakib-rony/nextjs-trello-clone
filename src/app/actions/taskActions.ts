@@ -1,12 +1,11 @@
 "use server";
-
 import { connectToDB } from "@/lib/db";
 import Task, { ITask } from "@/models/Task";
 import { Types } from "mongoose";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
-import User, { IUser } from "@/models/User";
+import User from "@/models/User";
 
 type CreateTaskInput = {
   name: string;
