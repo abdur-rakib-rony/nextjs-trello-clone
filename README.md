@@ -25,7 +25,7 @@ This project is built with Next.js, TypeScript, and MongoDB. The application sup
 - **NEXTAUTH_URL** http://localhost:3000
 
 ## Git Clone
-git clone [<https://github.com/abdur-rakib-rony/nextjs-trello-clone>](https://github.com/abdur-rakib-rony/nextjs-trello-clone)
+git clone [<https://github.com/abdur-rakib-rony/nextjs-trello-clone.git>](https://github.com/abdur-rakib-rony/nextjs-trello-clone.git)
 
 
 Feel free to clone the project. Thanks
