@@ -59,6 +59,9 @@ export async function createProject(
     });
     await newProject.save();
 
+    revalidatePath("/create-project")
+    revalidatePath("/projects")
+
     return {
       id: newProject._id,
       status: "success",

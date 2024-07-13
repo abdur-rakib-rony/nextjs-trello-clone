@@ -82,7 +82,7 @@ const AddMembers: React.FC<AddMembersProps> = ({ projectId, allUsers }) => {
         <Button
           variant="outline"
           size="icon"
-          className="rounded-full bg-green-400 text-black hover:bg-green-500 hover:text-white"
+          className="rounded-full bg-blue-400 text-white hover:bg-blue-500 hover:text-white"
         >
           <UserPlus size={16} />
         </Button>

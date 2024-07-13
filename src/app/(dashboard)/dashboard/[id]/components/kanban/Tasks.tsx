@@ -10,7 +10,7 @@ const Tasks = async ({ projectName }: any) => {
 
   return (
     <div className="md:scrollbar-hide mt-8 overflow-x-scroll md:overflow-visible">
-      {alltasks.length === 0 && (
+      {alltasks.length === 0 ? (
         <Alert className="mb-4">
           <Terminal className="h-4 w-4" />
           <AlertTitle>No Tasks Available?</AlertTitle>
@@ -18,8 +18,9 @@ const Tasks = async ({ projectName }: any) => {
             Don't worry, you can create your tasks from here.
           </AlertDescription>
         </Alert>
+      ) : (
+        <TaskLists alltasks={alltasks} columns={columns} />
       )}
-      <TaskLists alltasks={alltasks} columns={columns} />
     </div>
   );
 };

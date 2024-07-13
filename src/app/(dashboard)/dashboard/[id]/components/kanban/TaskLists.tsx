@@ -5,40 +5,14 @@ import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import { DraggableTask } from "./DraggableTask";
 import { updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
-import { Ellipsis, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Ellipsis, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { removeColumn } from "@/app/actions/columnActions";
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  UserPlus,
-  Users,
-} from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -111,9 +85,9 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
               className="w-1/2 rounded bg-gray-100 p-4"
             >
               <div className="mb-4 flex items-center justify-between">
-                <Badge className="bg-white text-xs uppercase text-black hover:text-white">
+                <div className="rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow">
                   to do
-                </Badge>
+                </div>
               </div>
               {alltasks
                 .filter((task: ITask) => task?.status?.toLowerCase() === "todo")
@@ -137,29 +111,28 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
                 className="w-1/2 rounded bg-gray-100 p-4"
               >
                 <div className="mb-4 flex items-center justify-between">
-                  <Badge className="bg-white text-xs uppercase text-black hover:text-white">
+                  <div className="rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow">
                     {column.name}
-                  </Badge>
+                  </div>
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="icon" className="rounded-full w-6 h-6">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-6 w-6 rounded-full"
+                      >
                         <Ellipsis size={14} />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                          <User className="mr-2 h-4 w-4" />
-                          <span>Assign User</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleRemoveColumn(column._id)}
-                        >
-                          <X className="mr-2 h-4 w-4" />
-                          <span>Delete</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
+                    <DropdownMenuContent className="w-10">
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => handleRemoveColumn(column._id)}
+                      >
+                        <Trash className="mr-2" size={14} color="red"/>
+                        <span className="text-red-500 hover:text-red-500">Delete</span>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>

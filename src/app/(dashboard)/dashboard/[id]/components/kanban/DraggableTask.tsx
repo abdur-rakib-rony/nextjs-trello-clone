@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -28,6 +28,8 @@ import { Input } from "@/components/ui/input";
 import { updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
 import moment from "moment";
+import { ClientUserSelector } from "./ClientUserSelector";
+import { getFirstCharacter } from "@/utils/getFirstCharacter";
 
 interface DraggableTaskProps {
   task: ITask;
@@ -45,6 +47,7 @@ const priorityColors: Record<Priority, string> = {
 
 export function DraggableTask({ task, index }: DraggableTaskProps) {
   const [description, setDescription] = useState(task.description || "");
+  const [assigneeName, setAssigneeName] = useState(task.assigneeName || "");
   const [summary, setSummary] = useState(task.summary || "");
   const [comment, setComment] = useState("");
   const [priority, setPriority] = useState<Priority>(
@@ -58,6 +61,7 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
       description,
       newComment: comment,
       priority,
+      assigneeName: assigneeName,
       labels,
     };
 
@@ -85,20 +89,56 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
-              className={`${task.priority === "High" ? "bg-green-100" : task.priority === "Urgent" ? "bg-red-100" : "bg-white"} mb-2`}
+              className="mb-2 overflow-hidden shadow-md transition-shadow duration-200 hover:shadow-lg"
             >
-              <CardHeader>
-                <CardTitle>{task.name}</CardTitle>
-                <CardDescription>{task.projectName}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs font-medium capitalize text-gray-500">
-                  Status: {task.status}
+              <div
+                className={`${task.priority === "High" ? "bg-green-400" : task.priority === "Urgent" ? "bg-red-400" : "bg-white"} h-1`}
+              />
+              <div className="p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">{task.name}</h3>
+                  <span
+                    className={`${task.priority === "High" ? "bg-green-400" : task.priority === "Urgent" ? "bg-red-400" : "bg-white"} rounded-full px-2 py-1 text-xs font-medium`}
+                  >
+                    {task.priority}
+                  </span>
+                </div>
+                <p className="mb-3 text-sm text-gray-600">{task.projectName}</p>
+                <p className="mb-4 text-sm text-gray-700">
+                  {task.description
+                    ? task.description.length > 100
+                      ? task.description.slice(0, 100) + "..."
+                      : task.description
+                    : "No description"}
                 </p>
-                <p className="mt-2 text-xs font-medium capitalize text-gray-500">
-                  Priority: <Badge>{task.priority}</Badge>
-                </p>
-              </CardContent>
+                <div className="mb-3 flex flex-wrap gap-2">
+                  <span className="rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                    {task.status}
+                  </span>
+                  <span className="rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                    Reporter: {task.reporterName}
+                  </span>
+                </div>
+                {task.assigneeName && (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="mr-2 rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                        Assignee:
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="mr-2 h-6 w-6 rounded-full bg-blue-300 text-xs hover:bg-blue-300"
+                      >
+                        {getFirstCharacter(task.assigneeName)}
+                      </Button>
+                      <span className="text-sm text-gray-600">
+                        {task.assigneeName}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </Card>
           </DialogTrigger>
           <DialogContent>
@@ -131,19 +171,28 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
                   />
                 </div>
                 <div>
+                  <Label htmlFor="assignee" className="text-right">
+                    Assignee
+                  </Label>
+                  <ClientUserSelector
+                    value={assigneeName}
+                    onChange={setAssigneeName}
+                  />
+                </div>
+                <div>
                   <Label className="text-right">Priority</Label>
                   <div className="col-span-3 flex space-x-2">
                     {(Object.keys(priorityColors) as Priority[]).map(
                       (level) => (
-                        <Badge
+                        <div
                           key={level}
-                          className={`cursor-pointer ${priorityColors[level]} ${
+                          className={`cursor-pointer rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow ${priorityColors[level]} ${
                             priority === level ? "ring-2 ring-offset-2" : ""
                           }`}
                           onClick={() => setPriority(level)}
                         >
                           {level}
-                        </Badge>
+                        </div>
                       ),
                     )}
                   </div>

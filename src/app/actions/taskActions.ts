@@ -6,6 +6,7 @@ import { Types } from "mongoose";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import User, { IUser } from "@/models/User";
 
 type CreateTaskInput = {
   name: string;
@@ -47,6 +48,18 @@ export async function createTask(
     await connectToDB();
 
     const user = await getCurrentUser();
+    if (!user || !user.email) {
+      throw new Error("User not authenticated");
+    }
+
+    const getUser = await User.findOne(
+      { email: user.email },
+      "-password",
+    ).exec();
+
+    if (!getUser) {
+      throw new Error("User not found in database");
+    }
 
     const newTask = new Task({ ...taskInput, status: "todo" });
 
@@ -58,8 +71,8 @@ export async function createTask(
       },
     ];
 
-    if (!newTask.reporterName && user.name) {
-      newTask.reporterName = user.name;
+    if (!newTask.reporterName && getUser.email) {
+      newTask.reporterName = `${getUser.first_name} ${getUser.last_name}`;
     }
 
     const savedTask = await newTask.save();
@@ -86,6 +99,18 @@ export async function updateTask(
   try {
     await connectToDB();
     const user = await getCurrentUser();
+    if (!user || !user.email) {
+      throw new Error("User not authenticated");
+    }
+
+    const getUser = await User.findOne(
+      { email: user.email },
+      "-password",
+    ).exec();
+
+    if (!getUser) {
+      throw new Error("User not found in database");
+    }
 
     const task = await Task.findById(taskId);
     if (!task) {
@@ -113,7 +138,7 @@ export async function updateTask(
     });
 
     if (updates.assigneeName) {
-      task.reporterName = user.name;
+      task.reporterName = `${getUser.first_name} ${getUser.last_name}`;
       activities.push({
         action: `Task assigned to ${updates.assigneeName}`,
         timestamp: new Date(),

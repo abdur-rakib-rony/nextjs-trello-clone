@@ -1,6 +1,8 @@
 export function getFirstCharacter(name: string | undefined) {
   if (name && typeof name === "string") {
-    return name.charAt(0);
+    const nameParts = name.split(" ");
+    const initials = nameParts.map((part) => part.charAt(0).toUpperCase());
+    return initials.join("");
   }
-  return "";
+  return "n/a";
 }

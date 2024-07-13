@@ -3,7 +3,6 @@ import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Users from "@/models/User";
 import { connectToDB } from "./db";
-import { IUser } from "@/models/User";
 
 interface CustomUser extends NextAuthUser {
   id: string;
@@ -21,9 +20,19 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  events: {
+    async signOut({ session, token }) {
+      console.log("User signed out");
+    },
+  },
   callbacks: {
     async signIn({ account }) {
       return account?.provider === "credentials";
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
     async jwt({ token, user, trigger, session }): Promise<JWT> {
       if (user) {
