@@ -54,7 +54,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full rounded-lg bg-white p-8 shadow-md md:w-96">
+    <div className="w-full rounded-lg bg-white p-6 shadow-md md:w-96">
       <h2 className="mb-6 text-2xl font-semibold">Login to your Account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
@@ -121,7 +121,7 @@ export default function LoginForm() {
       <div className="mt-2 flex items-center justify-center text-center text-sm">
         <span>Don&apos;t have an account?</span>
         <Link href="/register" className="font-semibold">
-          <Button variant="link">Register Here</Button>
+          <Button variant="link">Register Now</Button>
         </Link>
       </div>
     </div>

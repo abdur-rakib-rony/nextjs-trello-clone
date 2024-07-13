@@ -51,7 +51,7 @@ const RegisterForm: FC = () => {
   };
 
   return (
-    <div className="w-full rounded-lg bg-white p-8 shadow-md md:w-96">
+    <div className="w-full rounded-lg bg-white p-6 shadow-md md:w-96">
       <h2 className="mb-6 text-2xl font-semibold">Register your Account</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex gap-4">

@@ -1,17 +1,22 @@
+import { FC } from "react";
 import { getColumns } from "@/app/actions/columnActions";
 import { getTasksByProject } from "@/app/actions/taskActions";
-import { TaskLists } from "./TaskLists";
+import TaskLists from "./TaskLists";
 import { Terminal } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-const Tasks = async ({ projectName }: any) => {
+interface tasksProps {
+  projectName: string;
+}
+
+const Tasks: FC<tasksProps> = async ({ projectName }) => {
   const alltasks = await getTasksByProject({ projectName });
   const columns = await getColumns();
 
   return (
-    <div className="md:scrollbar-hide mt-8 overflow-x-scroll md:overflow-visible">
+    <div className="scrollbar-hide mt-8 overflow-x-scroll md:overflow-visible">
       {alltasks.length === 0 ? (
-        <Alert className="mb-4">
+        <Alert className="mb-4 w-fit">
           <Terminal className="h-4 w-4" />
           <AlertTitle>No Tasks Available?</AlertTitle>
           <AlertDescription>

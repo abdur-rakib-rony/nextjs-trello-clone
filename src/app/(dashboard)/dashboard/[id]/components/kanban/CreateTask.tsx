@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +14,7 @@ interface CreateTaskProps {
   projectName: string;
 }
 
-export default function CreateTask({ projectName }: CreateTaskProps) {
+const CreateTask: FC<CreateTaskProps> = ({ projectName }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,4 +31,6 @@ export default function CreateTask({ projectName }: CreateTaskProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default CreateTask;

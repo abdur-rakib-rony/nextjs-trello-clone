@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import { FC } from "react";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
-import { DraggableTask } from "./DraggableTask";
+import DraggableTask from "./DraggableTask";
 import { updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
 import { Ellipsis, Trash } from "lucide-react";
@@ -15,18 +15,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface Column {
-  _id: string;
-  name: string;
-}
+import { IColumn } from "@/models/Column";
 
 interface TaskListsProps {
   alltasks: ITask[];
-  columns: any[];
+  columns: IColumn[];
 }
 
-export function TaskLists({ alltasks, columns }: TaskListsProps) {
+const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
   const { toast } = useToast();
 
   const onDragEnd = async (result: DropResult) => {
@@ -102,8 +98,8 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
             </div>
           )}
         </Droppable>
-        {columns.map((column: Column) => (
-          <Droppable key={column._id} droppableId={column.name}>
+        {columns.map((column: IColumn) => (
+          <Droppable key={column._id.toString()} droppableId={column.name}>
             {(provided) => (
               <div
                 ref={provided.innerRef}
@@ -128,10 +124,14 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
                     <DropdownMenuContent className="w-10">
                       <DropdownMenuItem
                         className="cursor-pointer"
-                        onClick={() => handleRemoveColumn(column._id)}
+                        onClick={() =>
+                          handleRemoveColumn(column._id.toString())
+                        }
                       >
-                        <Trash className="mr-2" size={14} color="red"/>
-                        <span className="text-red-500 hover:text-red-500">Delete</span>
+                        <Trash className="mr-2" size={14} color="red" />
+                        <span className="text-red-500 hover:text-red-500">
+                          Delete
+                        </span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -156,4 +156,6 @@ export function TaskLists({ alltasks, columns }: TaskListsProps) {
       </div>
     </DragDropContext>
   );
-}
+};
+
+export default TaskLists;

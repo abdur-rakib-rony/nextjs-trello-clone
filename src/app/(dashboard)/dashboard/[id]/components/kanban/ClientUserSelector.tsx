@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { getAllUsers } from "@/app/actions/userActions";
 import { IUser } from "@/models/User";
 import {
@@ -15,14 +15,23 @@ interface ClientUserSelectorProps {
   onChange: (value: string) => void;
 }
 
-export function ClientUserSelector({
+const ClientUserSelector: FC<ClientUserSelectorProps> = ({
   value,
   onChange,
-}: ClientUserSelectorProps) {
+}) => {
   const [users, setUsers] = useState<Omit<IUser, "password">[]>([]);
 
   useEffect(() => {
-    getAllUsers().then(setUsers).catch(console.error);
+    const fetchUsers = async () => {
+      try {
+        const fetchedUsers = await getAllUsers();
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   return (
@@ -32,11 +41,16 @@ export function ClientUserSelector({
       </SelectTrigger>
       <SelectContent>
         {users.map((user) => (
-          <SelectItem key={user._id.toString()} value={`${user.first_name} ${user.last_name}`}>
+          <SelectItem
+            key={user._id.toString()}
+            value={`${user.first_name} ${user.last_name}`}
+          >
             {`${user.first_name} ${user.last_name}`}
           </SelectItem>
         ))}
       </SelectContent>
     </Select>
   );
-}
+};
+
+export default ClientUserSelector;

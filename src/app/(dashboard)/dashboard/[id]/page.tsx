@@ -26,14 +26,16 @@ const Project = async ({ params }: { params: ProjectParams }) => {
     <div className="py-6">
       <LinksBreadcrumb name={project.name} link={`/dashboard/${id}`} />
       <h1 className="mb-4 mt-2 text-xl font-semibold">{project.name}</h1>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col md:items-center gap-4 md:flex-row">
         <ProjectUsers
           users={project.members as IUser[]}
           project={project}
           allUsers={allUsers}
         />
-        <CreateButton />
-        <CreateTask projectName={project.name} />
+        <div className="flex items-center gap-4">
+          <CreateButton />
+          <CreateTask projectName={project.name} />
+        </div>
       </div>
       <Tasks projectName={project.name} />
     </div>

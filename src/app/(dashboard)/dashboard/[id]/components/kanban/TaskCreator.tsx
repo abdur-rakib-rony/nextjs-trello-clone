@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,7 +30,7 @@ interface CreateTaskProps {
   projectName: string;
 }
 
-export default function TaskCreator({ projectName }: CreateTaskProps) {
+const TaskCreator: FC<CreateTaskProps> = ({ projectName }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof taskFormSchema>>({
@@ -168,4 +168,6 @@ export default function TaskCreator({ projectName }: CreateTaskProps) {
       </form>
     </Form>
   );
-}
+};
+
+export default TaskCreator;

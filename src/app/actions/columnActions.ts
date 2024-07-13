@@ -3,7 +3,7 @@ import { connectToDB } from "@/lib/db";
 import Column, { IColumn } from "@/models/Column";
 import { revalidatePath } from "next/cache";
 
-interface CreateColumnResult {
+interface ResponseResult {
   status: "success" | "error";
   message: string;
 }
@@ -25,12 +25,12 @@ export async function getColumns(): Promise<IColumn[]> {
   }
 }
 
-export async function createColumn(name: string): Promise<CreateColumnResult> {
+export async function createColumn(name: string): Promise<ResponseResult> {
   try {
     await connectToDB();
     const columnCount = await Column.countDocuments();
 
-    if (columnCount >= 5) {
+    if (columnCount >= 4) {
       return {
         status: "error",
         message: "Maximum of 5 columns reached",
@@ -53,9 +53,7 @@ export async function createColumn(name: string): Promise<CreateColumnResult> {
   }
 }
 
-export async function removeColumn(
-  columnId: string,
-): Promise<CreateColumnResult> {
+export async function removeColumn(columnId: string): Promise<ResponseResult> {
   try {
     await connectToDB();
 

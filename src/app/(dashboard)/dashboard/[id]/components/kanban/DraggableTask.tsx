@@ -1,13 +1,6 @@
 "use client";
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { FC, useState } from "react";
+import { Card } from "@/components/ui/card";
 import { Draggable } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -28,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
 import moment from "moment";
-import { ClientUserSelector } from "./ClientUserSelector";
+import ClientUserSelector from "./ClientUserSelector";
 import { getFirstCharacter } from "@/utils/getFirstCharacter";
 
 interface DraggableTaskProps {
@@ -45,7 +37,7 @@ const priorityColors: Record<Priority, string> = {
   Urgent: "bg-red-400 hover:bg-red-500",
 };
 
-export function DraggableTask({ task, index }: DraggableTaskProps) {
+const DraggableTask: FC<DraggableTaskProps> = ({ task, index }) => {
   const [description, setDescription] = useState(task.description || "");
   const [assigneeName, setAssigneeName] = useState(task.assigneeName || "");
   const [summary, setSummary] = useState(task.summary || "");
@@ -96,15 +88,19 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
               />
               <div className="p-4">
                 <div className="mb-2 flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">{task.name}</h3>
+                  <h3 className="text-lg font-semibold capitalize">
+                    {task.name}
+                  </h3>
                   <span
-                    className={`${task.priority === "High" ? "bg-green-400" : task.priority === "Urgent" ? "bg-red-400" : "bg-white"} rounded-full px-2 py-1 text-xs font-medium`}
+                    className={`${task.priority === "High" ? "bg-green-400" : task.priority === "Urgent" ? "bg-red-400" : "bg-white"} rounded-full px-2 py-1 text-xs font-medium capitalize`}
                   >
                     {task.priority}
                   </span>
                 </div>
-                <p className="mb-3 text-sm text-gray-600">{task.projectName}</p>
-                <p className="mb-4 text-sm text-gray-700">
+                <p className="mb-3 text-sm capitalize text-gray-600">
+                  {task.projectName}
+                </p>
+                <p className="mb-4 text-sm capitalize text-gray-700">
                   {task.description
                     ? task.description.length > 100
                       ? task.description.slice(0, 100) + "..."
@@ -112,19 +108,16 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
                     : "No description"}
                 </p>
                 <div className="mb-3 flex flex-wrap gap-2">
-                  <span className="rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                  <span className="rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium capitalize text-blue-800">
                     {task.status}
                   </span>
-                  <span className="rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                  <span className="rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium capitalize text-gray-800">
                     Reporter: {task.reporterName}
                   </span>
                 </div>
                 {task.assigneeName && (
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between capitalize">
                     <div className="flex items-center">
-                      <span className="mr-2 rounded bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-                        Assignee:
-                      </span>
                       <Button
                         variant="outline"
                         size="icon"
@@ -132,7 +125,7 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
                       >
                         {getFirstCharacter(task.assigneeName)}
                       </Button>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm font-medium text-gray-600">
                         {task.assigneeName}
                       </span>
                     </div>
@@ -264,4 +257,6 @@ export function DraggableTask({ task, index }: DraggableTaskProps) {
       )}
     </Draggable>
   );
-}
+};
+
+export default DraggableTask;

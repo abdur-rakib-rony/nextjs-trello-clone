@@ -13,7 +13,7 @@ interface CreateProjectInput {
   members?: string[];
 }
 
-interface CreateProjectResult {
+interface ResponseResult {
   id: string;
   status: "success" | "error";
   message: string;
@@ -29,7 +29,7 @@ async function getCurrentUser() {
 
 export async function createProject(
   input: CreateProjectInput,
-): Promise<CreateProjectResult> {
+): Promise<ResponseResult> {
   try {
     await connectToDB();
 
@@ -162,7 +162,7 @@ export async function getProjectById(
 export async function removeMemberFromProject(
   projectId: string,
   memberId: string,
-): Promise<CreateProjectResult> {
+): Promise<ResponseResult> {
   try {
     await connectToDB();
 
@@ -242,7 +242,7 @@ export async function removeMemberFromProject(
 export async function addMemberToProject(
   projectId: string,
   memberId: string,
-): Promise<CreateProjectResult> {
+): Promise<ResponseResult> {
   try {
     await connectToDB();
 
@@ -323,7 +323,7 @@ export async function addMemberToProject(
 
 export async function deleteProject(
   projectId: string,
-): Promise<CreateProjectResult> {
+): Promise<ResponseResult> {
   try {
     await connectToDB();
 
