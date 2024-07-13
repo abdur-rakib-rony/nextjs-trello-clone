@@ -263,13 +263,15 @@ const DraggableTask: FC<DraggableTaskProps> = ({ task, index }) => {
                 </div>
               </div>
             </div>
-            <DialogFooter className="flex justify-between w-full">
-              <Button variant="destructive" onClick={handleDelete}>
+            <DialogFooter className="border shadow p-4 rounded-md">
+              <div className="flex items-center gap-4 justify-between w-full">
+              <Button variant="destructive" onClick={handleDelete} className="w-fit">
                 Delete Task
               </Button>
-              <Button type="submit" onClick={handleSave}>
+              <Button type="submit" onClick={handleSave} className="w-fit">
                 Save changes
               </Button>
+              </div>
             </DialogFooter>
           </DialogContent>
         </Dialog>

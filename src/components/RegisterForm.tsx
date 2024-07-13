@@ -133,7 +133,7 @@ const RegisterForm: FC = () => {
       <div className="mt-2 flex items-center justify-center text-center text-sm">
         <span>Already have an account?</span>
         <Link href="/" className="font-semibold">
-          <Button variant="link">Login Here</Button>
+          <Button variant="link">Login Now</Button>
         </Link>
       </div>
     </div>

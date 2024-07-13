@@ -27,12 +27,14 @@ import { getAllUsers } from "@/app/actions/userActions";
 import { IUser } from "@/models/User";
 import { useRouter } from "next/navigation";
 import { projectFormSchema } from "@/schemas/zod";
+import { Loader2 } from "lucide-react";
 
 type FormValues = z.infer<typeof projectFormSchema>;
 
 const ProjectForm: FC = () => {
   const { toast } = useToast();
   const [users, setUsers] = useState<IUser[]>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -58,6 +60,7 @@ const ProjectForm: FC = () => {
   const router = useRouter();
 
   const onSubmit = async (values: FormValues) => {
+    setIsLoading(true);
     try {
       const result = await createProject(values);
       if (result.status === "success") {
@@ -77,6 +80,8 @@ const ProjectForm: FC = () => {
           error instanceof Error ? error.message : "An error occurred",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -133,7 +138,11 @@ const ProjectForm: FC = () => {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full">
-            Create
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              "Create Project"
+            )}
           </Button>
         </CardFooter>
       </form>

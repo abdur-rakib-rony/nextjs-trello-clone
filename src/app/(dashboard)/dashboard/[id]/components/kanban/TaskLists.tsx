@@ -78,7 +78,7 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className="w-1/2 rounded bg-gray-100 p-4"
+              className="min-w-56 md:w-1/2 rounded bg-gray-100 p-4"
             >
               <div className="mb-4 flex items-center justify-between">
                 <div className="rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow">
@@ -104,7 +104,7 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="w-1/2 rounded bg-gray-100 p-4"
+                className="min-w-56 md:w-1/2 rounded bg-gray-100 p-4"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div className="rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow">
