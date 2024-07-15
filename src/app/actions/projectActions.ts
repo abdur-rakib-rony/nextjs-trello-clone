@@ -384,12 +384,27 @@ export async function createColumn(
   columnName: string,
 ): Promise<ResponseResult> {
   try {
-    const updatedProject = await Project.findByIdAndUpdate(
-      projectId,
-      { $addToSet: { columns: columnName } },
-      { new: true, runValidators: true },
-    );
+    const project = await Project.findById(projectId);
 
+    if (!project) {
+      return {
+        id: "",
+        status: "error",
+        message: "Project not found.",
+      };
+    }
+
+    if (project.columns.length >= 4) {
+      return {
+        id: "",
+        status: "error",
+        message: "Cannot add more than 4 columns to a project.",
+      };
+    }
+
+    project.columns.push(columnName);
+    await project.save();
+    
     revalidatePath("/dashboard");
 
     return {
