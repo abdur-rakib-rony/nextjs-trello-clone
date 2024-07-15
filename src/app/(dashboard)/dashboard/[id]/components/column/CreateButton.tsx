@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import ColumnCreator from "./ColumnCreator";
 
-const CreateButton: FC = () => {
+interface createButtonProps {
+  projectId: string;
+}
+
+const CreateButton: FC<createButtonProps> = ({ projectId }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -21,7 +25,7 @@ const CreateButton: FC = () => {
           <DialogTitle>Create New Column</DialogTitle>
           <DialogDescription>You can create 5 column only.</DialogDescription>
         </DialogHeader>
-        <ColumnCreator />
+        <ColumnCreator projectId={projectId}/>
       </DialogContent>
     </Dialog>
   );

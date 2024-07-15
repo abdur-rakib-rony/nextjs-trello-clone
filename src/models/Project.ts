@@ -5,6 +5,7 @@ export interface IProject extends Document {
   _id: Types.ObjectId;
   name: string;
   members?: Types.ObjectId[] | IUser[];
+  columns?: string[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,6 +16,7 @@ const ProjectSchema: Schema<IProject> = new Schema(
     members: [
       { type: Schema.Types.ObjectId, ref: "TrennyUser", required: true },
     ],
+    columns: [],
   },
   { timestamps: true },
 );

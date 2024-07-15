@@ -378,3 +378,78 @@ export async function deleteProject(
     };
   }
 }
+
+export async function createColumn(
+  projectId: string,
+  columnName: string,
+): Promise<ResponseResult> {
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { $addToSet: { columns: columnName } },
+      { new: true, runValidators: true },
+    );
+
+    revalidatePath("/dashboard");
+
+    return {
+      id: "",
+      status: "success",
+      message: "Project column created successfully.",
+    };
+  } catch (error) {
+    console.error("Error adding column:", error);
+    return {
+      id: "",
+      status: "error",
+      message: "An unexpected error occurred.",
+    };
+  }
+}
+
+export async function removeColumn(
+  projectId: string,
+  columnName: string,
+): Promise<ResponseResult> {
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { $pull: { columns: columnName } },
+      { new: true },
+    );
+
+    revalidatePath("/dashboard");
+
+    return {
+      id: "",
+      status: "success",
+      message: "Project column removed successfully.",
+    };
+  } catch (error) {
+    console.error("Error removing column:", error);
+    return {
+      id: "",
+      status: "error",
+      message: "An unexpected error occurred.",
+    };
+  }
+}
+
+export async function getColumnsByProjectName(
+  projectName: string,
+): Promise<string[] | null> {
+  try {
+    await connectToDB();
+
+    const project = await Project.findOne({ name: projectName });
+
+    if (!project) {
+      return null;
+    }
+
+    return project.columns || [];
+  } catch (error) {
+    console.error("Error fetching columns:", error);
+    throw error;
+  }
+}

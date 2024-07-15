@@ -1,6 +1,5 @@
 "use client";
 import { FC } from "react";
-import { createColumn } from "@/app/actions/columnActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -16,8 +15,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { columnFormSchema } from "@/schemas/zod";
+import { createColumn } from "@/app/actions/projectActions";
 
-const ColumnCreator: FC = () => {
+interface columnCreatorProps {
+  projectId: string;
+}
+
+const ColumnCreator: FC<columnCreatorProps> = ({ projectId }) => {
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof columnFormSchema>>({
@@ -29,7 +33,8 @@ const ColumnCreator: FC = () => {
 
   const onSubmit = async (values: z.infer<typeof columnFormSchema>) => {
     try {
-      const result = await createColumn(values.columnName);
+      const result = await createColumn(projectId, values.columnName);
+
       if (result.status === "success") {
         form.reset();
         toast({

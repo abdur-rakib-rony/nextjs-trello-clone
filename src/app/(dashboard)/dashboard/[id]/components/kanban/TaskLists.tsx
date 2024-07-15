@@ -7,7 +7,7 @@ import { updateTask } from "@/app/actions/taskActions";
 import { ITask } from "@/models/Task";
 import { Ellipsis, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { removeColumn } from "@/app/actions/columnActions";
+import { removeColumn } from "@/app/actions/projectActions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,14 +15,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { IColumn } from "@/models/Column";
 
 interface TaskListsProps {
   alltasks: ITask[];
-  columns: IColumn[];
+  columns: string[];
+  projectId: string;
 }
 
-const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
+const TaskLists: FC<TaskListsProps> = ({ alltasks, columns, projectId }) => {
   const { toast } = useToast();
 
   const onDragEnd = async (result: DropResult) => {
@@ -45,9 +45,9 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
     });
   };
 
-  const handleRemoveColumn = async (columnId: string) => {
+  const handleRemoveColumn = async (columnName: string) => {
     try {
-      const result = await removeColumn(columnId);
+      const result = await removeColumn(projectId, columnName);
       if (result.status === "success") {
         toast({
           title: "Success",
@@ -78,7 +78,7 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className="min-w-56 md:w-1/2 rounded bg-gray-100 p-4"
+              className="min-w-56 rounded bg-gray-100 p-4 md:w-1/2"
             >
               <div className="mb-4 flex items-center justify-between">
                 <div className="rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow">
@@ -98,17 +98,17 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
             </div>
           )}
         </Droppable>
-        {columns.map((column: IColumn) => (
-          <Droppable key={column._id.toString()} droppableId={column.name}>
+        {columns.map((column: string) => (
+          <Droppable key={column} droppableId={column}>
             {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="min-w-56 md:w-1/2 rounded bg-gray-100 p-4"
+                className="min-w-56 rounded bg-gray-100 p-4 md:w-1/2"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div className="rounded-md bg-white px-2 py-1 text-xs font-medium uppercase shadow">
-                    {column.name}
+                    {column}
                   </div>
 
                   <DropdownMenu>
@@ -124,9 +124,7 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
                     <DropdownMenuContent className="w-10">
                       <DropdownMenuItem
                         className="cursor-pointer"
-                        onClick={() =>
-                          handleRemoveColumn(column._id.toString())
-                        }
+                        onClick={() => handleRemoveColumn(column)}
                       >
                         <Trash className="mr-2" size={14} color="red" />
                         <span className="text-red-500 hover:text-red-500">
@@ -139,7 +137,7 @@ const TaskLists: FC<TaskListsProps> = ({ alltasks, columns }) => {
                 {alltasks
                   .filter(
                     (task: ITask) =>
-                      task?.status?.toLowerCase() === column.name.toLowerCase(),
+                      task?.status?.toLowerCase() === column.toLowerCase(),
                   )
                   .map((task: ITask, index: number) => (
                     <DraggableTask

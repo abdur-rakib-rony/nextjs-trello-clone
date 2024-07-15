@@ -1,17 +1,18 @@
 import { FC } from "react";
-import { getColumns } from "@/app/actions/columnActions";
 import { getTasksByProject } from "@/app/actions/taskActions";
 import TaskLists from "./TaskLists";
 import { Terminal } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { getColumnsByProjectName } from "@/app/actions/projectActions";
 
 interface tasksProps {
   projectName: string;
+  projectId: string;
 }
 
-const Tasks: FC<tasksProps> = async ({ projectName }) => {
+const Tasks: FC<tasksProps> = async ({ projectName, projectId }) => {
   const alltasks = await getTasksByProject({ projectName });
-  const columns = await getColumns();
+  const columns: string[] | null = await getColumnsByProjectName(projectName);
 
   return (
     <div className="scrollbar-hide mt-8 overflow-x-scroll md:overflow-visible">
@@ -24,7 +25,11 @@ const Tasks: FC<tasksProps> = async ({ projectName }) => {
           </AlertDescription>
         </Alert>
       ) : (
-        <TaskLists alltasks={alltasks} columns={columns} />
+        <TaskLists
+          alltasks={alltasks}
+          columns={columns || []}
+          projectId={projectId}
+        />
       )}
     </div>
   );
